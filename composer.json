@@ -12,5 +12,10 @@
             "homepage": "http://www.beyondit.at",
             "role": "Developer"
         }
-    ]
+    ],
+    "autoload": {
+        "classmap": [
+            "src/"
+        ]
+    },
 }
