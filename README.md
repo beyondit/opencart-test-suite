@@ -16,13 +16,16 @@ The project is at the initial stage. And the approach how to set this up will pr
 
 ### Steps to use
 * create a directory in the root of your OpenCart installation (e.g. tests/)
-* create a composer.json file inside, and add the following:
+* create a composer.json file inside, and add the following:  
+```javascript
 	{
 	    "require": {
 		"beyondit/opencart-test-suite": "0.1.3"
 	    }
 	}
-* create a phpunit.xml and add the following:
+```
+* create a phpunit.xml and add the following:  
+```xml
 	<?xml version="1.0" encoding="UTF-8"?>
 
 	<phpunit bootstrap="vendor/autoload.php" colors="true">
@@ -32,13 +35,18 @@ The project is at the initial stage. And the approach how to set this up will pr
 		</testsuite>
 	    </testsuites>
 	</phpunit>
-* create a UnitTest and extend it from OpenCartTest class, e.g.:
+```
+* create a UnitTest and extend it from OpenCartTest class, e.g.:  
+```php
 	<?php
 	class MyTest extends OpenCartTest {	
 		public function testSomething() {			
 		}	
 	}
-* if you haven't installed PHPUnit then use the folling command to run the test (inside your test folder):
+```
+* run the following command to run the test (inside your test folder):  
+```
 	vendor/bin/phpunit MyTest
+```
 
 
