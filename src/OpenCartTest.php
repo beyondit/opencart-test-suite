@@ -1,11 +1,13 @@
 <?php
 
+define('OC_ROOT',__DIR__ . '/../../../../../');
+
 class OpenCartTest extends PHPUnit_Framework_TestCase {
 	
 	protected $registry;
 	
 	// TODO: check for a better way to get the root of the opencart installation
-	const DIR_OPENCART = __DIR__ . '/../../../../../';
+	const DIR_OPENCART = OC_ROOT;
 	
 	public function __get($key) {
 		return $this->registry->get($key);
