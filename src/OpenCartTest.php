@@ -7,6 +7,13 @@ class OpenCartTest extends PHPUnit_Framework_TestCase {
 	
 	protected $registry;
 	
+	public static $_OPENCART = OC_ROOT;
+	
+	public static function getConfigurationPath() {				
+		$admin = strpos(get_called_class(),"AdminTest");
+		return self::$_OPENCART . ($admin === false ? '' : 'admin/') . 'config.php' ;
+	}
+	
 	public function __get($key) {
 		return $this->registry->get($key);
 	}
@@ -15,14 +22,22 @@ class OpenCartTest extends PHPUnit_Framework_TestCase {
 		$this->registry->set($key, $value);
 	}	
 	
-	public function __construct() {
+	public function loadConfiguration() {
+		
+		// either load admin or catalog config.php		
+		$path = self::getConfigurationPath();
 		
 		// Configuration
-		if (file_exists(OC_ROOT . 'config.php')) {
-			require_once(OC_ROOT . 'config.php');
+		if (file_exists($path)) {
+			require_once($path);
 		} else {
 			throw new Exception('OpenCart has to be installed first!');
-		}
+		}		
+	}
+	
+	public function __construct() {
+		
+		$this->loadConfiguration();
 				
 		// Startup
 		require_once(DIR_SYSTEM . 'startup.php');

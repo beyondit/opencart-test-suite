@@ -1,0 +1,16 @@
+# OpenCart Testing Suite
+
+## Motivation
+The development of custom extensions for OpenCart gets tedious at the point where unit testing needs to be done. The intend of this project is to provide a simple approach for setting up a test suite for custom OpenCart development.
+
+## Roadmap / Ideas / ...
+* Provide a simple approach for testing custom controllers, models, extensions
+* Provide a simple acceptance testing approach for selenium
+
+## Usage
+The project is at the initial stage. And the approach how to set this up will probably change.  
+
+### Prerequisits
+* Install [composer](http://getcomposer.org/) on your machine
+* 
+
