@@ -18,10 +18,10 @@ The project is at the initial stage. And the approach how to set this up will pr
 * create a directory in the root of your OpenCart installation (e.g. tests/)
 * create a composer.json file inside, and add the following:  
 ```javascript
-	{
-	    "require": {
-		"beyondit/opencart-test-suite": "0.1.3"
-	    }
+	{  
+	    "require": {  
+		"beyondit/opencart-test-suite": "0.1.3"  
+	    }  
 	}
 ```
 * create a phpunit.xml and add the following:  
@@ -38,7 +38,6 @@ The project is at the initial stage. And the approach how to set this up will pr
 ```
 * create a UnitTest and extend it from OpenCartTest class, e.g.:  
 ```php
-	<?php
 	class MyTest extends OpenCartTest {	
 		public function testSomething() {			
 		}	
