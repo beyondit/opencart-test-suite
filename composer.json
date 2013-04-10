@@ -1,0 +1,16 @@
+{
+    "name": "beyondit/opencart-test-suite",
+    "description": "Testing suite for OpenCart Extension Development",
+    "require": {
+        "phpunit/phpunit": "3.7.*"
+    },
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "Stefan Huber",
+            "email": "stefan.huber@beyondit.at",
+            "homepage": "http://www.beyondit.at",
+            "role": "Developer"
+        }
+    ]
+}
