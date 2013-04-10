@@ -1,13 +1,11 @@
 <?php
 
+// TODO: check for a better way to get the root of the opencart installation
 define('OC_ROOT',__DIR__ . '/../../../../../');
 
 class OpenCartTest extends PHPUnit_Framework_TestCase {
 	
 	protected $registry;
-	
-	// TODO: check for a better way to get the root of the opencart installation
-	const DIR_OPENCART = OC_ROOT;
 	
 	public function __get($key) {
 		return $this->registry->get($key);
@@ -20,8 +18,8 @@ class OpenCartTest extends PHPUnit_Framework_TestCase {
 	public function __construct() {
 		
 		// Configuration
-		if (file_exists(DIR_OPENCART . 'config.php')) {
-			require_once(DIR_OPENCART . 'config.php');
+		if (file_exists(OC_ROOT . 'config.php')) {
+			require_once(OC_ROOT . 'config.php');
 		} else {
 			throw new Exception('OpenCart has to be installed first!');
 		}
