@@ -26,8 +26,6 @@ The project is at the initial stage. And the approach how to set this up will pr
 ```
 * create a phpunit.xml and add the following:  
 ```xml
-	<?xml version="1.0" encoding="UTF-8"?>
-
 	<phpunit bootstrap="vendor/autoload.php" colors="true">
 	    <testsuites>
 		<testsuite name="Add the name of your Testsuite">
@@ -38,7 +36,6 @@ The project is at the initial stage. And the approach how to set this up will pr
 ```
 * create a UnitTest and extend it from OpenCartTest class, e.g.:  
 ```php
-	<?php
 	class MyTest extends OpenCartTest {	
 		public function testSomething() {			
 		}	

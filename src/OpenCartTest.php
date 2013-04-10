@@ -6,6 +6,7 @@ define('OC_ROOT',__DIR__ . '/../../../../../');
 class OpenCartTest extends PHPUnit_Framework_TestCase {
 	
 	protected $registry;
+	protected $front;
 	
 	public static $_OPENCART = OC_ROOT;
 	
@@ -197,6 +198,66 @@ class OpenCartTest extends PHPUnit_Framework_TestCase {
 		// Encryption
 		$this->registry->set('encryption', new Encryption($config->get('config_encryption')));
 		
+		// Front Controller
+		$this->front = new Front($this->registry);
+		
+		// TODO: check if preactions are neccessary for testing purpouses...
+		// SEO URL's
+		$this->front->addPreAction(new Action('common/seo_url'));
+		
+		// Maintenance Mode
+		$this->front->addPreAction(new Action('common/maintenance'));
 	}	
+	
+	/*
+	 * A Controller Object is returned, the actual action is not executed
+	 * 
+	 * @throws Exception if controller doesn't exist
+	 */
+	public function loadControllerByRoute($route) {
+		$action = new Action($route);
+		
+		// copied from front controller to resolve the action controller and return it:
+		if (file_exists($action->getFile())) {
+			require_once($action->getFile());
+				
+			$class = $action->getClass();
+		
+			return new $class($this->registry);				
+		}	
+
+		throw new Exception("Controller doesn't exist!");
+		
+	}
+	
+	public function dispatchAction($route) {
+		
+		// Router
+		if (!empty($route)) {
+			$action = new Action($route);
+		} else {
+			$action = new Action('common/home');
+		}
+		
+		// Dispatch
+		$this->front->dispatch($action, new Action('error/not_found'));
+		
+		return $this->response;
+	}
+	
+	public function loadModelByRoute($route) {
+		$this->load->model($route);		
+		$parts = explode("/",$route);
+		
+		$model = 'model';
+				
+		foreach ($parts as $part) {
+			$model .= "_" . $part;
+		}
+		
+		return $this->$model;
+		
+	}
+	
 		
 }
