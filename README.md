@@ -20,7 +20,7 @@ The development of custom extensions for OpenCart gets tedious at the point wher
 ```javascript
 {
 	"require": {
-		"beyondit/opencart-test-suite": "0.1.3"
+		"beyondit/opencart-test-suite": "0.1.4"
 	}
 }
 ```
