@@ -6,6 +6,7 @@ The development of custom extensions for OpenCart gets tedious at the point wher
 ## Roadmap / Ideas / ...
 * Provide a simple approach for testing custom controllers, models, extensions
 * Provide a simple acceptance testing approach for selenium
+* Provide a simple approach for running tests on a CI-Server (like Jenkins)
 * ...
 
 ## Usage
@@ -21,7 +22,7 @@ The development of custom extensions for OpenCart gets tedious at the point wher
 ```javascript
 {
 	"require": {
-		"beyondit/opencart-test-suite": "0.1.4"
+		"beyondit/opencart-test-suite": "0.2.0"
 	}
 }
 ```
@@ -83,8 +84,72 @@ class ControllerAccountWishListTest extends OpenCartTest {
 	}	
 }
 ```
+
+### Testing With Logged In Customers
+```php
+class ControllerAccountWishListTest extends OpenCartTest {	
+	public function testAddingAProductToTheAccountWishList() {
+		
+		// load the the wishlist controller within accout folder
+		$controller = $this->loadControllerByRoute("account/wishlist");
+		
+		// set some test params for your request
+		$this->request->post['product_id'] = 123;
+		
+		// loggin in an existing customer	
+		$this->customerLogin('mycustomer@example.com','password');
+
+		$controller->add();
+		
+		// get the response
+		$response = $this->response;
+		
+		/*
+		 * Unfortunately the current version of OpenCart doesn't provide a getOuput() Method
+		 * inside the response class, if you add it to your response class you 
+		 * could do custom assertions of your actual response, otherwise you can
+		 * only print the response to your command line:
+		 *  
+		 */
+		
+		$response->output();
+	}	
+}
+```
+
 ### Testing Classes from Admin
 In order to test classes inside the admin folder just call your test class ending with `AdminTest` e.g. `ModelCatalogCategoryAdminTest`
+
+### Testing With Selenium
+Running Acceptance (Functional) Tests with Selenium requires a standalone selenium server on your machine.
+The server can be downloaded from [here](http://code.google.com/p/selenium/downloads/list). Before starting your Selenium Tests
+you have to run the standalone server: `java -jar selenium-server-standalone-2.32.0.jar`. Writing Selenium Tests requires you to extend the OpenCartSeleniumTest class.
+
+```php
+class SeleniumShoppingCartTest extends OpenCartSeleniumTest {	
+    
+    protected function setUp()
+    {
+        $this->setBrowser('firefox');
+        $this->setBrowserUrl('http://localhost/opencart/');
+    }
+ 
+    public function testIfTheRightPriceIsSetForAProductInTheCart()
+    {
+       
+    	$this->url("index.php?route=product/product&product_id=43");
+    	
+        $this->clickOnElement("button-cart");
+        
+        $this->url("index.php?route=checkout/cart");
+        
+        $element = $this->byCssSelector(".cart-info tbody .price");
+
+        $this->assertEquals("$589.50", $element->text());
+              
+    }
+}
+```
 
 ## Note
 This project is at an initial stage, however already provides lots of convenience for testing OpenCart Components and can increase development productivity. Feel free to provide some feedback!
