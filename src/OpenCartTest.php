@@ -202,12 +202,30 @@ class OpenCartTest extends PHPUnit_Framework_TestCase {
 		$this->front = new Front($this->registry);
 		
 		// TODO: check if preactions are neccessary for testing purpouses...
-		// SEO URL's
-		$this->front->addPreAction(new Action('common/seo_url'));
 		
+		// SEO URL's
+		// $this->front->addPreAction(new Action('common/seo_url'));		
 		// Maintenance Mode
-		$this->front->addPreAction(new Action('common/maintenance'));
+		// $this->front->addPreAction(new Action('common/maintenance'));
 	}	
+	
+	public function customerLogin($user,$password,$override=false) {
+		
+		// set a REMOTE_ADDR for the customer ...
+		$this->request->server['REMOTE_ADDR'] = '127.0.0.1';
+		$logged = $this->customer->login($user,$password,$override);		
+				
+		if (!$logged) {
+			throw new Exception('Could not login customer');	
+		}		
+	}
+	
+	public function customerLogout() {		
+		if ($this->customer->isLogged()) {		
+			$this->customer->logout();		
+		}
+	}
+	
 	
 	/*
 	 * A Controller Object is returned, the actual action is not executed
