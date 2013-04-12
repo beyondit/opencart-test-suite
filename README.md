@@ -6,6 +6,7 @@ The development of custom extensions for OpenCart gets tedious at the point wher
 ## Roadmap / Ideas / ...
 * Provide a simple approach for testing custom controllers, models, extensions
 * Provide a simple acceptance testing approach for selenium
+* ...
 
 ## Usage
 
@@ -57,7 +58,7 @@ class ModelCatalogManufacturerTest extends OpenCartTest {
 ### Testing a Controller
 ```php
 class ControllerAccountWishListTest extends OpenCartTest {	
-	public function testASpecificManufacturer() {
+	public function testAddingAProductToTheAccountWishList() {
 		
 		// load the the wishlist controller within accout folder
 		$controller = $this->loadControllerByRoute("account/wishlist");
