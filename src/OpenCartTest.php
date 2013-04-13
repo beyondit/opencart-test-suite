@@ -226,6 +226,16 @@ class OpenCartTest extends PHPUnit_Framework_TestCase {
 		}
 	}
 	
+	// legal hack to access a private property, this is only neccessary because
+	// my pull request was rejected: https://github.com/opencart/opencart/pull/607
+	public function getOutput() {
+		
+		$class = new ReflectionClass("Response");
+		$property = $class->getProperty("output");
+		$property->setAccessible(true);
+		return $property->getValue($this->response);
+		
+	}	
 	
 	/*
 	 * A Controller Object is returned, the actual action is not executed

@@ -59,28 +59,19 @@ class ModelCatalogManufacturerTest extends OpenCartTest {
 ### Testing a Controller
 ```php
 class ControllerAccountWishListTest extends OpenCartTest {	
-	public function testAddingAProductToTheAccountWishList() {
+	public function testAddingASpecificProductToTheCart() {
 		
-		// load the the wishlist controller within accout folder
-		$controller = $this->loadControllerByRoute("account/wishlist");
-		
-		// set some test params for your request
-		$this->request->post['product_id'] = 123;
-		
+		$controller = $this->loadControllerByRoute("checkout/cart");
+		$this->request->post['product_id'] = 28;
+
 		$controller->add();
 		
-		// get the response
-		$response = $this->response;
+		// use $this->getOutput() to access the rendered response as a string
+		$output = json_decode($this->getOutput(),true);	
 		
-		/*
-		 * Unfortunately the current version of OpenCart doesn't provide a getOuput() Method
-		 * inside the response class, if you add it to your response class you 
-		 * could do custom assertions of your actual response, otherwise you can
-		 * only print the response to your command line:
-		 *  
-		 */
-		
-		$response->output();
+		$this->assertTrue(isset($output['success']) && isset($output['total']));
+		$this->assertEquals(1,preg_match('/HTC Touch HD/', $output['success']));
+
 	}	
 }
 ```
@@ -88,31 +79,14 @@ class ControllerAccountWishListTest extends OpenCartTest {
 ### Testing With Logged In Customers
 ```php
 class ControllerAccountWishListTest extends OpenCartTest {	
-	public function testAddingAProductToTheAccountWishList() {
+	public function testTheContentsOfALoggedInCustomersWishList() {
 		
-		// load the the wishlist controller within accout folder
-		$controller = $this->loadControllerByRoute("account/wishlist");
-		
-		// set some test params for your request
-		$this->request->post['product_id'] = 123;
-		
-		// loggin in an existing customer	
-		$this->customerLogin('mycustomer@example.com','password');
+		$controller = $this->loadControllerByRoute("account/wishlist");	
 
-		$controller->add();
+		$this->customerLogin('mycustomer@example.com','password');
+		$controller->index();
 		
-		// get the response
-		$response = $this->response;
-		
-		/*
-		 * Unfortunately the current version of OpenCart doesn't provide a getOuput() Method
-		 * inside the response class, if you add it to your response class you 
-		 * could do custom assertions of your actual response, otherwise you can
-		 * only print the response to your command line:
-		 *  
-		 */
-		
-		$response->output();
+		$this->assertEquals(1,preg_match('/Your wish list is empty./', $this->getOutput()));
 	}	
 }
 ```

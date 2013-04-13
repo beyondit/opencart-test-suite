@@ -45,6 +45,32 @@ class SampleTest extends OpenCartTest {
 		
 	}
 	
+	public function testGettingTheOutputOfAResponseForVerification() {
+		
+			$controller = $this->loadControllerByRoute("account/wishlist");	
+
+			$this->customerLogin("stefan.huber.mail@gmail.com", "password");
+			$controller->index();
+			
+			$this->assertEquals(1,preg_match('/Your wish list is empty./', $this->getOutput()));
+		
+	}
+	
+	public function testVerifyingTheOutput() {
+		
+		$controller = $this->loadControllerByRoute("checkout/cart");
+		$this->request->post['product_id'] = 28;
+
+		$controller->add();
+		
+		$output = json_decode($this->getOutput(),true);	
+		
+		$this->assertTrue(isset($output['success']) && isset($output['total']));
+		$this->assertEquals(1,preg_match('/HTC Touch HD/', $output['success']));
+				
+	}
+	
+	
 	// this test only works if there exists a user with email: stefan.huber.mail@gmail.com and the password: password
 	public function testLoggingInAndOutACustomer() {
 		
