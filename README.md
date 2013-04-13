@@ -22,7 +22,7 @@ The development of custom extensions for OpenCart gets tedious at the point wher
 ```javascript
 {
 	"require": {
-		"beyondit/opencart-test-suite": "0.2.0"
+		"beyondit/opencart-test-suite": "0.2.1"
 	}
 }
 ```
@@ -82,7 +82,7 @@ class ControllerAccountWishListTest extends OpenCartTest {
 	public function testTheContentsOfALoggedInCustomersWishList() {
 		
 		$controller = $this->loadControllerByRoute("account/wishlist");	
-
+	
 		$this->customerLogin('mycustomer@example.com','password');
 		$controller->index();
 		
