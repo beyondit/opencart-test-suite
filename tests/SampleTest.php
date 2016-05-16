@@ -1,86 +1,32 @@
 <?php
 
-require_once '../src/OpenCartTest.php';
-OpenCartTest::$_OPENCART = dirname(dirname(__DIR__)) . "/";
+require_once __DIR__ . '/../src/OpenCartTest.php';
 
-class SampleTest extends OpenCartTest {
-	
+class SampleTest extends OpenCartTest
+{
+    public function testIsAdmin()
+    {
+        $this->assertFalse($this->isAdmin());
+    }
 
-	/**
-	 * @expectedException PHPUnit_Framework_Error
-	 */
-	public function testACallToARequiredLoginAction() {
-	
-		$response = $this->dispatchAction('account/wishlist');
-		$response->output();
-	
-	}
-	
-	public function testACallToARequiredLoginActionWithLoggedInCustomer() {
-	
-		$this->customerLogin("stefan.huber.mail@gmail.com", "password");		
-		$response = $this->dispatchAction('account/wishlist');
-		// $response->output();
-	
-	}
-	
-	public function testLoadingExamplaryController() {
-		
-		$controller = $this->loadControllerByRoute('product/product');			
-		$this->assertInstanceOf('ControllerProductProduct', $controller);
-		
-	}
-	
-	public function testDispatchingExamplaryAction() {
-		
-		$response = $this->dispatchAction('product/product');
-		$this->assertInstanceOf('Response', $response);
-		
-	}
-	
-	public function testLoadingExamplaryModel() {
-		
-		$model = $this->loadModelByRoute('catalog/category');
-		$this->assertInstanceOf('ModelCatalogCategory', $model);
-		
-	}
-	
-	public function testGettingTheOutputOfAResponseForVerification() {
-		
-			$controller = $this->loadControllerByRoute("account/wishlist");	
+    public function testDispatchingToExamplaryAction()
+    {
+        $response = $this->dispatchAction('account/login');
+        $this->assertRegExp('/I am a returning customer/',$response->getOutput());
+    }
 
-			$this->customerLogin("stefan.huber.mail@gmail.com", "password");
-			$controller->index();
-			
-			$this->assertEquals(1,preg_match('/Your wish list is empty./', $this->getOutput()));
-		
-	}
-	
-	public function testVerifyingTheOutput() {
-		
-		$controller = $this->loadControllerByRoute("checkout/cart");
-		$this->request->post['product_id'] = 28;
+    public function testDispatchingToAnotherExamplaryAction()
+    {
+        $response = $this->dispatchAction('checkout/cart/add','POST',['product_id' => 28]);
+        $output = json_decode($response->getOutput(),true);
+        $this->assertTrue(isset($output['success']) && isset($output['total']));
+        $this->assertRegExp('/HTC Touch HD/', $output['success']);
+    }
 
-		$controller->add();
-		
-		$output = json_decode($this->getOutput(),true);	
-		
-		$this->assertTrue(isset($output['success']) && isset($output['total']));
-		$this->assertEquals(1,preg_match('/HTC Touch HD/', $output['success']));
-				
-	}
-	
-	
-	// this test only works if there exists a user with email: stefan.huber.mail@gmail.com and the password: password
-	public function testLoggingInAndOutACustomer() {
-		
-		$this->customerLogin("stefan.huber.mail@gmail.com", "password");
-		$this->assertGreaterThan(0,$this->customer->isLogged());
-		
-		$this->customerLogout();	
-		$this->assertEmpty($this->customer->isLogged());		
-		
-	}
-
-	
+    public function testAnExamplaryModel()
+    {
+        $model = $this->loadModel("catalog/manufacturer");
+        $manufacturer = $model->getManufacturer(5);
+        $this->assertEquals('HTC', $manufacturer['name']);
+    }
 }

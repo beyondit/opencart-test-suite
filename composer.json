@@ -1,9 +1,8 @@
 {
     "name": "beyondit/opencart-test-suite",
-    "description": "Testing suite for OpenCart Extension Development",
+    "description": "Testing Suite for OpenCart Development",
     "require": {
-        "phpunit/phpunit": "3.7.*",
-        "phpunit/phpunit-selenium": ">=1.2"
+        "phpunit/phpunit": "4.*"
     },
     "license": "GPL-3.0",
     "authors": [
@@ -14,9 +13,25 @@
             "role": "Developer"
         }
     ],
+    "repositories": [
+        {
+            "type" : "vcs" ,
+            "url" : "https://github.com/opencart/opencart"
+        }
+    ],
+    "require-dev": {
+        "opencart/opencart" : "2.2.0.0",
+        "vlucas/phpdotenv": "~1.1.0",
+        "phpunit/phpunit" : "4.*",
+        "codegyre/robo": "*"
+    },
     "autoload": {
         "classmap": [
             "src/"
         ]
+    },
+    "config": {
+        "bin-dir": "bin/",
+        "preferred-install": "source"
     }
 }
