@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/beyondit/opencart-test-suite.svg?branch=master)](https://travis-ci.org/beyondit/opencart-test-suite)
+
 # OpenCart Testing Suite
 
 ## Motivation
