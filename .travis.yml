@@ -6,5 +6,5 @@ install:
 before_script:
   - echo "USE mysql;\nUPDATE user SET password=PASSWORD('root') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
 script:
-  bin/robo travis:opencart-setup
-  bin/phpunit
+  - bin/robo travis:opencart-setup
+  - bin/phpunit
