@@ -3,7 +3,7 @@
 # OpenCart Testing Suite
 
 ## Motivation
-The intend of this project is to provide a simple approach for setting up a test suite for custom OpenCart development.
+The intend of this project is to provide a simple approach for setting up a test suite for custom OpenCart (v2.2.0.0) development. 
 			
 ## Examples
 
@@ -28,7 +28,7 @@ class ModelCatalogManufacturerTest extends OpenCartTest
 
 ### Testing a Controller
 ```php
-class ControllerAccountWishListTest extends OpenCartTest
+class ControllerCheckoutCartTest extends OpenCartTest
 {	
 	public function testAddingASpecificProductToTheCart()
 	{
@@ -42,3 +42,39 @@ class ControllerAccountWishListTest extends OpenCartTest
 	}	
 }
 ```
+
+### Testing with logged in Customers
+```php
+class ControllerAccountEditTest extends OpenCartTest {  
+    public function testEditAccountWithLoggedInCustomer() {
+
+        $this->login('somebody@test.com','password');
+        
+        $response = $this->dispatchAction('account/edit');
+        $this->assertRegExp('/Your Personal Details/',$response->getOutput());
+        
+        $this->logout();
+        
+    }   
+}
+```
+
+### Testing with logged in Users inside Admin
+
+In order to test classes inside the admin folder just call your test class ending with `AdminTest` e.g. `ModelCatalogCategoryAdminTest`
+
+```php
+class ControllerCommonDashboardAdminTest extends OpenCartTest {  
+    public function testShowDashboardWithLoggedInUser() {
+
+        $this->login('admin','admin');
+        
+        $response = $this->dispatchAction('common/dashboard');
+        $this->assertRegExp('/Total Sales/', $response->getOutput());
+        
+        $this->logout();
+        
+    }   
+}
+```
+
