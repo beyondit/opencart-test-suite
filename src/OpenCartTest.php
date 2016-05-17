@@ -13,8 +13,9 @@ class OpenCartTest extends PHPUnit_Framework_TestCase
 	public static function loadConfiguration()
 	{
         // OC_ROOT environment variable
-        if (!empty(getenv('OC_ROOT'))) {
-            $_ENV['OC_ROOT'] = getenv('OC_ROOT');
+        $oc_root = getenv('OC_ROOT');
+        if ($oc_root != false && !empty($oc_root)) {
+            $_ENV['OC_ROOT'] = $oc_root;
         }
 		if (!isset($_ENV['OC_ROOT'])) {
 			throw new \Exception('OC_ROOT environment variable needs to be set');
