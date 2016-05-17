@@ -2,17 +2,25 @@
 
 class TestSession
 {
-    public $data = array();
-    public $session_id;
+    public static $static_data = array();
+    public static $session_id = 0;
+
+    public function & __get($name)
+    {
+        if ($name === 'data') {
+            return self::$static_data;
+        }
+    }
 
     public function __construct()
     {
-        // Unique session per request, by default
-        $this->session_id = bin2hex(openssl_random_pseudo_bytes(16));
+        if (self::$session_id === 0) {
+            self::$session_id = bin2hex(openssl_random_pseudo_bytes(16));
+        }
     }
 
     public function getId() {
-        return $this->session_id;
+        return self::$session_id;
     }
 
 }

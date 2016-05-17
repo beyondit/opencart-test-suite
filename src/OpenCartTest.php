@@ -12,9 +12,18 @@ class OpenCartTest extends PHPUnit_Framework_TestCase
 
 	public static function loadConfiguration()
 	{
+        // OC_ROOT environment variable
+        if (!empty(getenv('OC_ROOT'))) {
+            $_ENV['OC_ROOT'] = getenv('OC_ROOT');
+        }
 		if (!isset($_ENV['OC_ROOT'])) {
 			throw new \Exception('OC_ROOT environment variable needs to be set');
 		}
+
+        // Path needs / at the end
+        if (substr($_ENV['OC_ROOT'],-1) != DIRECTORY_SEPARATOR) {
+            $_ENV['OC_ROOT'] .= DIRECTORY_SEPARATOR;
+        }
 
 		$config_path = $_ENV['OC_ROOT'] . (self::isAdmin() === false ? '' : 'admin/') . 'config.php';
 
@@ -42,16 +51,20 @@ class OpenCartTest extends PHPUnit_Framework_TestCase
             require_once(DIR_SYSTEM . 'framework.php');
             ob_end_clean();
 
-            $session = new stdClass();
-            $session->data = array();
-            $session->session_id = bin2hex(openssl_random_pseudo_bytes(16));
-            $session->getId = function() use ($session) {
-                return $session->session_id;
-            };
+
 
             self::$registry = $registry;
             self::$registry->set('controller',$controller);
-            self::$registry->set('session',$session);
+
+            if (self::isAdmin()) {
+                $session = new stdClass();
+                $session->data = array();
+                $session->session_id = bin2hex(openssl_random_pseudo_bytes(16));
+                $session->getId = function() use ($session) {
+                    return $session->session_id;
+                };
+                self::$registry->set('session',$session);
+            }
 
             self::$loaded = true;
         }
@@ -69,7 +82,7 @@ class OpenCartTest extends PHPUnit_Framework_TestCase
 
 	public function dispatchAction($route, $request_method = 'GET', $data = array())
 	{
-		if ($request_method != 'GET' && $request_method != 'POST') {
+        if ($request_method != 'GET' && $request_method != 'POST') {
 			$request_method = 'GET';
 		}
 
@@ -77,6 +90,7 @@ class OpenCartTest extends PHPUnit_Framework_TestCase
 			$this->request->{strtolower($request_method)}[$key] = $value;
 		}
 
+        $this->request->get['route'] = $route;
 		$this->request->server['REQUEST_METHOD'] = $request_method;
 		$this->controller->dispatch(new Action($route), new Action($this->config->get('action_error')));
 
@@ -109,5 +123,17 @@ class OpenCartTest extends PHPUnit_Framework_TestCase
 
 		return $logged;
 	}
+
+    public function logout()
+    {
+        if ($this->isAdmin()) {
+            $this->user->logout();
+            unset($this->session->data['user_id']);
+            unset($this->session->data['token']);
+        } else {
+            $this->customer->logout();
+            unset($this->session->data['customer_id']);
+        }
+    }
 		
 }

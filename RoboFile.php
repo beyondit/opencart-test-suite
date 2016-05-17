@@ -24,7 +24,6 @@ class RoboFile extends \Robo\Tasks
             ->mirror('vendor/opencart/opencart/upload', 'www')
             ->copy('src/test-config.php', 'www/system/config/test-config.php')
             ->copy('src/test-catalog-startup.php','www/catalog/controller/startup/test_startup.php')
-            ->copy('src/test-admin-startup.php','www/admin/controller/startup/test_startup.php')
             ->chmod('www', 0777, 0000, true)
             ->run();
 

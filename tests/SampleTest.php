@@ -22,11 +22,4 @@ class SampleTest extends OpenCartTest
         $this->assertTrue(isset($output['success']) && isset($output['total']));
         $this->assertRegExp('/HTC Touch HD/', $output['success']);
     }
-
-    public function testAnExamplaryModel()
-    {
-        $model = $this->loadModel("catalog/manufacturer");
-        $manufacturer = $model->getManufacturer(5);
-        $this->assertEquals('HTC', $manufacturer['name']);
-    }
 }

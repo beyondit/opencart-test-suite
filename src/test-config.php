@@ -38,7 +38,7 @@ if (defined('HTTP_ADMIN')) { // is defined iff in catalog
 
     // Actions
     $_['action_pre_action'] = array(
-        'startup/test_startup' ,
+        'startup/startup' ,
         'startup/error',
         'startup/event',
         'startup/sass',

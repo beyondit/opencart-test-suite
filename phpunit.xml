@@ -10,11 +10,12 @@
          stopOnFailure="false"
          syntaxCheck="false">
     <testsuites>
-        <testsuite name="Opencart tests">
-            <directory>./tests/</directory>
+        <testsuite name="catalog-tests">
+            <file>./tests/SampleTest.php</file>
+            <file>./tests/Sample2Test.php</file>
+        </testsuite>
+        <testsuite name="admin-tests">
+            <file>./tests/SampleAdminTest.php</file>
         </testsuite>
     </testsuites>
-    <php>
-        <env name="OC_ROOT" value="/home/travis/build/beyondit/opencart-test-suite/www/" />
-    </php>
 </phpunit>
