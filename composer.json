@@ -26,8 +26,8 @@
         "codegyre/robo": "*"
     },
     "autoload": {
-        "classmap": [
-            "src/"
+        "files": [
+            "src/OpenCartTest.php"
         ]
     },
     "config": {
