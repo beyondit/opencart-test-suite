@@ -13,14 +13,8 @@
             "role": "Developer"
         }
     ],
-    "repositories": [
-        {
-            "type" : "vcs" ,
-            "url" : "https://github.com/opencart/opencart"
-        }
-    ],
     "require-dev": {
-        "opencart/opencart" : "2.2.0.0",
+        "opencart/opencart" : "2.3.0.0_b1",
         "vlucas/phpdotenv": "~1.1.0",
         "phpunit/phpunit" : "4.*",
         "codegyre/robo": "*"

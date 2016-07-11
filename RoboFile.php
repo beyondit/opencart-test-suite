@@ -42,7 +42,11 @@ class RoboFile extends \Robo\Tasks
         foreach ($this->config as $option => $value) {
             $install->option($option, $value);
         }
+        
+        ob_start();
         $install->run();
+        ob_end_clean();
+
         $this->taskDeleteDir('www/install')->run();
     }
 
