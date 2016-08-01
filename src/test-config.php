@@ -1,4 +1,7 @@
 <?php
+
+define('VERSION', '2.3.0.1');
+
 // Site
 $_['site_base']        = substr(HTTP_SERVER, 7);
 $_['site_ssl']         = false;

@@ -14,7 +14,7 @@
         }
     ],
     "require-dev": {
-        "opencart/opencart" : "2.3.0.0_b1",
+        "opencart/opencart" : "2.3.0.1",
         "vlucas/phpdotenv": "~1.1.0",
         "phpunit/phpunit" : "4.*",
         "codegyre/robo": "*"

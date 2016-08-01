@@ -38,8 +38,6 @@ class OpenCartTest extends PHPUnit_Framework_TestCase
     public static function loadOpenCart()
     {
         if (!self::$loaded) {
-            define('VERSION', '2.2.0.0');
-
             $application_config = 'test-config';
             $_SERVER['SERVER_PORT'] = 80;
             $_SERVER['SERVER_PROTOCOL'] = 'CLI';

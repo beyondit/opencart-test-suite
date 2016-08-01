@@ -17,7 +17,7 @@ class RoboFile extends \Robo\Tasks
         'http_server' => 'http://localhost:8000/'
     ];
 
-    public function travisOpencartSetup()
+    public function opencartSetup()
     {
         $this->taskDeleteDir('www')->run();
         $this->taskFileSystemStack()
@@ -42,7 +42,7 @@ class RoboFile extends \Robo\Tasks
         foreach ($this->config as $option => $value) {
             $install->option($option, $value);
         }
-        
+
         ob_start();
         $install->run();
         ob_end_clean();

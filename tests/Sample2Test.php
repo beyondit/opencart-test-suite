@@ -1,7 +1,5 @@
 <?php
 
-require_once __DIR__ . '/../src/OpenCartTest.php';
-
 class Sample2Test extends OpenCartTest
 {
 
