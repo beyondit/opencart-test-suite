@@ -3,7 +3,7 @@
 # OpenCart Testing Suite
 
 ## Motivation
-The intend of this project is to provide a simple approach for setting up a test suite for custom OpenCart (v2.2.0.0) development. 
+The intend of this project is to provide a simple approach for setting up a test suite for custom OpenCart development. 
 
 ## Getting started
 The easiest way to get started, is to use our [Opencart Project Template](https://github.com/beyondit/opencart-project-template).
