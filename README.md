@@ -5,10 +5,35 @@
 ## Motivation
 The intend of this project is to provide a simple approach for setting up a test suite for custom OpenCart development. 
 
-## Getting started
-The easiest way to get started, is to use our [Opencart Project Template](https://github.com/beyondit/opencart-project-template).
+## Getting started from scratch
+
+ - Create a new OpenCart project with composer: `composer create-project opencart/opencart`
+ - Install OpenCart, easiest via command line: `php upload/install/cli_install.php` (be sure you have respective execute permissions on the file)
+ - Navigate into the newly created `opencart` folder and add `opencart-test-suite` as a dependency: `composer require beyondit/opencart-test-suite --dev`
+ - Create a `tests` folder and add respective tests (see examples below)
+ - Add a `phpunit.xml` which includes testsuites (e.g. admin and catalog) and set an env variable to the opencart root directory (see example phpunit.xml below)
+ - Copy `test-config.php` from project to `upload/system/config/test-config.php` and `test-catalog-startup.php` to `upload/catalog/controller/startup/test_startup.php`
+ - Now tests can be run via `vendor/bin/phpunit` command
+
+__A much easier way to get started is to use our project template, which offers many conveniences out of the box: [Opencart Project Template](https://github.com/beyondit/opencart-project-template).__
+
+## Example of a phpunit.xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="vendor/autoload.php">
+    <testsuites>
+        <testsuite name="catalog-tests">
+            <file>./tests/SampleTest.php</file>
+        </testsuite>        
+    </testsuites>
+    <php>
+        <env name="OC_ROOT" value="/../opencart/root-folder" />
+    </php>
+</phpunit>
+```
 			
-## Examples
+## Test Examples
 
 ### Testing a Model
 
