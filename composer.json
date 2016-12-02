@@ -2,7 +2,8 @@
     "name": "beyondit/opencart-test-suite",
     "description": "Testing Suite for OpenCart Development",
     "require": {
-        "phpunit/phpunit": "4.*"
+        "phpunit/phpunit": "4.*" ,
+        "beyondit/opencart-extension-installer": "*"
     },
     "license": "GPL-3.0",
     "authors": [
