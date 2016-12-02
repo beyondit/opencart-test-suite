@@ -3,7 +3,7 @@
     "description": "Testing Suite for OpenCart Development",
     "require": {
         "phpunit/phpunit": "4.*" ,
-        "beyondit/opencart-extension-installer": "*"
+        "beyondit/opencart-extension-installer": "~2.2.0"
     },
     "license": "GPL-3.0",
     "authors": [
@@ -15,7 +15,7 @@
         }
     ],
     "require-dev": {
-        "opencart/opencart" : "2.3.0.2",
+        "opencart/opencart" : "2.2.0.0",
         "vlucas/phpdotenv": "~1.1.0",
         "phpunit/phpunit" : "4.*",
         "consolidation/robo": "^1.0"
