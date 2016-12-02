@@ -4,7 +4,7 @@
 
 ## Supported OpenCart Versions
 
-| OpenCart version | opencart-test-suite version |build status|   |   |
+| OpenCart version | opencart-test-suite version |build status|
 |---|---|---|
 | ~2.2.0 | ~2.2.0 | [![Build Status](https://travis-ci.org/beyondit/opencart-test-suite.svg?branch=2.2)](https://travis-ci.org/beyondit/opencart-test-suite) |
 | ~2.3.0 | ~2.3.0 | [![Build Status](https://travis-ci.org/beyondit/opencart-test-suite.svg?branch=2.3)](https://travis-ci.org/beyondit/opencart-test-suite) |
