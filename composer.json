@@ -14,14 +14,22 @@
         }
     ],
     "require-dev": {
-        "opencart/opencart" : "2.3.0.1",
+        "opencart/opencart" : "2.3.0.2",
         "vlucas/phpdotenv": "~1.1.0",
         "phpunit/phpunit" : "4.*",
-        "codegyre/robo": "*"
+        "consolidation/robo": "^1.0"
     },
     "autoload": {
         "files": [
             "src/OpenCartTest.php"
+        ]
+    },
+    "type": "opencart-extension",
+    "extra": {
+        "src-dir" : "src/upload",
+        "mappings" : [
+            "system/config/test-config.php",
+            "catalog/controller/startup/test_startup.php"
         ]
     },
     "config": {
