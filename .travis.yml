@@ -2,7 +2,8 @@ language: php
 env:
   - OC_ROOT=/home/travis/build/beyondit/opencart-test-suite/www/
 php:
-  - "5.4"
+  - "5.5"
+  - "7"
 install:
   composer install
 before_script:
