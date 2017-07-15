@@ -1,40 +1,35 @@
 {
-    "name": "beyondit/opencart-test-suite",
-    "description": "Testing Suite for OpenCart Development",
-    "require": {
-        "phpunit/phpunit": "4.*" ,
-        "beyondit/opencart-extension-installer": "*"
-    },
-    "license": "GPL-3.0",
-    "authors": [
-        {
-            "name": "Stefan Huber",
-            "email": "stefan.huber@beyondit.at",
-            "homepage": "http://www.beyondit.at",
-            "role": "Developer"
+    "name" : "beyondit/opencart-test-suite",
+    "description" : "Testing Suite for OpenCart Development",
+    "license" : "GPL-3.0",
+    "authors" : [{
+            "name" : "Stefan Huber",
+            "email" : "stefan.huber@beyondit.at",
+            "homepage" : "http://www.beyondit.at",
+            "role" : "Developer"
         }
     ],
-    "require-dev": {
-        "opencart/opencart" : "2.3.0.2",
-        "vlucas/phpdotenv": "~1.1.0",
-        "phpunit/phpunit" : "4.*",
-        "consolidation/robo": "^1.0"
+    "type" : "opencart-extension",
+    "extra" : {
+        "src-dir" : "src/upload"
     },
-    "autoload": {
-        "files": [
+    "config" : {
+        "bin-dir" : "bin/",
+        "preferred-install" : "source"
+    },
+    "require" : {
+        "php" : ">=5.4",
+        "phpunit/phpunit" : "^6.2",
+        "beyondit/opencart-extension-installer" : "*"
+    },
+    "require-dev" : {
+        "opencart/opencart" : "3.0.1.1",
+        "consolidation/robo" : "^1.1",
+        "vlucas/phpdotenv" : "^2.4"
+    },
+    "autoload" : {
+        "files" : [
             "src/OpenCartTest.php"
         ]
-    },
-    "type": "opencart-extension",
-    "extra": {
-        "src-dir" : "src/upload",
-        "mappings" : [
-            "system/config/test-config.php",
-            "catalog/controller/startup/test_startup.php"
-        ]
-    },
-    "config": {
-        "bin-dir": "bin/",
-        "preferred-install": "source"
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit backupGlobals="false"
          backupStaticAttributes="false"
-         bootstrap="vendor/autoload.php"
+         bootstrap="src/bootstrap.php"
          colors="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
@@ -11,11 +11,10 @@
          syntaxCheck="false">
     <testsuites>
         <testsuite name="catalog-tests">
-            <file>./tests/SampleTest.php</file>
-            <file>./tests/Sample2Test.php</file>
+            <directory suffix="Test.php">./tests/catalog/</directory>
         </testsuite>
         <testsuite name="admin-tests">
-            <file>./tests/SampleAdminTest.php</file>
+            <directory suffix="AdminTest.php">./tests/admin/</directory>
         </testsuite>
     </testsuites>
 </phpunit>

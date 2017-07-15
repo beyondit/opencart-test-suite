@@ -21,8 +21,5 @@ class SampleAdminTest extends OpenCartTest
         $response = $this->dispatchAction('common/dashboard');
         $this->assertRegExp('/Please enter your login details./', $response->getOutput());
     }
-
-
-
 }
 

@@ -1,36 +1,6 @@
 <?php
-
-class TestSession
-{
-    public static $static_data = array();
-    public static $session_id = 0;
-
-    public function & __get($name)
-    {
-        if ($name === 'data') {
-            return self::$static_data;
-        }
-    }
-
-    public function __construct()
-    {
-        if (self::$session_id === 0) {
-            self::$session_id = bin2hex(openssl_random_pseudo_bytes(16));
-        }
-    }
-
-    public function getId() {
-        return self::$session_id;
-    }
-
-}
-
 class ControllerStartupTestStartup extends Controller {
     public function index() {
-
-        // Test Session
-        $this->registry->set('session', new TestSession());
-
         // Store
         if ($this->request->server['HTTPS']) {
             $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "store WHERE REPLACE(`ssl`, 'www.', '') = '" . $this->db->escape('https://' . str_replace('www.', '', $_SERVER['HTTP_HOST']) . rtrim(dirname($_SERVER['PHP_SELF']), '/.\\') . '/') . "'");
@@ -39,7 +9,7 @@ class ControllerStartupTestStartup extends Controller {
         }
 
         if (isset($this->request->get['store_id'])) {
-            $this->config->set('config_store_id', $this->request->get['store_id']);
+            $this->config->set('config_store_id', (int)$this->request->get['store_id']);
         } else if ($query->num_rows) {
             $this->config->set('config_store_id', $query->row['store_id']);
         } else {
@@ -48,6 +18,7 @@ class ControllerStartupTestStartup extends Controller {
 
         if (!$query->num_rows) {
             $this->config->set('config_url', HTTP_SERVER);
+            $this->config->set('config_ssl', HTTPS_SERVER);
         }
 
         // Settings
@@ -60,6 +31,9 @@ class ControllerStartupTestStartup extends Controller {
                 $this->config->set($result['key'], json_decode($result['value'], true));
             }
         }
+
+        // Url
+        $this->registry->set('url', new Url($this->config->get('config_url'), $this->config->get('config_ssl')));
 
         // Language
         $code = '';
@@ -78,15 +52,36 @@ class ControllerStartupTestStartup extends Controller {
 
         // Language Detection
         if (!empty($this->request->server['HTTP_ACCEPT_LANGUAGE']) && !array_key_exists($code, $languages)) {
+            $detect = '';
+
             $browser_languages = explode(',', $this->request->server['HTTP_ACCEPT_LANGUAGE']);
 
+            // Try using local to detect the language
             foreach ($browser_languages as $browser_language) {
-                if (array_key_exists(strtolower($browser_language), $languages)) {
-                    $code = strtolower($browser_language);
+                foreach ($languages as $key => $value) {
+                    if ($value['status']) {
+                        $locale = explode(',', $value['locale']);
 
-                    break;
+                        if (in_array($browser_language, $locale)) {
+                            $detect = $key;
+                            break 2;
+                        }
+                    }
                 }
             }
+
+            if (!$detect) {
+                // Try using language folder to detect the language
+                foreach ($browser_languages as $browser_language) {
+                    if (array_key_exists(strtolower($browser_language), $languages)) {
+                        $detect = strtolower($browser_language);
+
+                        break;
+                    }
+                }
+            }
+
+            $code = $detect ? $detect : '';
         }
 
         if (!array_key_exists($code, $languages)) {
@@ -111,11 +106,12 @@ class ControllerStartupTestStartup extends Controller {
         $this->registry->set('customer', $customer);
 
         // Customer Group
-        if ($this->customer->isLogged()) {
-            $this->config->set('config_customer_group_id', $this->customer->getGroupId());
-        } elseif (isset($this->session->data['customer']) && isset($this->session->data['customer']['customer_group_id'])) {
+        if (isset($this->session->data['customer']) && isset($this->session->data['customer']['customer_group_id'])) {
             // For API calls
             $this->config->set('config_customer_group_id', $this->session->data['customer']['customer_group_id']);
+        } elseif ($this->customer->isLogged()) {
+            // Logged in customers
+            $this->config->set('config_customer_group_id', $this->customer->getGroupId());
         } elseif (isset($this->session->data['guest']) && isset($this->session->data['guest']['customer_group_id'])) {
             $this->config->set('config_customer_group_id', $this->session->data['guest']['customer_group_id']);
         }
@@ -126,9 +122,6 @@ class ControllerStartupTestStartup extends Controller {
 
             $this->db->query("UPDATE `" . DB_PREFIX . "marketing` SET clicks = (clicks + 1) WHERE code = '" . $this->db->escape($this->request->get['tracking']) . "'");
         }
-
-        // Affiliate
-        $this->registry->set('affiliate', new Cart\Affiliate($this->registry));
 
         // Currency
         $code = '';

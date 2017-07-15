@@ -1,22 +1,45 @@
 <?php
 
-class OpenCartTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class OpenCartTest extends TestCase
 {
     static $loaded = false;
     static $registry;
+    private static $is_admin = null;
+
+    public function setUp()
+    {
+        if (!self::$loaded) {
+            $application_config = getenv('TEST_CONFIG');
+            $_SERVER['SERVER_PORT'] = 80;
+            $_SERVER['SERVER_PROTOCOL'] = 'CLI';
+            $_SERVER['REQUEST_METHOD'] = 'GET';
+            $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+
+            ob_start();
+            self::loadConfiguration();
+            require_once(DIR_SYSTEM . 'startup.php');
+            require(DIR_SYSTEM . 'framework.php');
+            ob_end_clean();
+
+            self::$registry = $registry;
+            self::$registry->set('controller', $route);
+
+            self::$loaded = true;
+        }
+    }
 
     public static function isAdmin()
     {
-        return is_int(strpos(get_called_class(), "AdminTest"));
+        if (is_null(self::$is_admin)) {
+            self::$is_admin = is_int(strpos(get_called_class(), "AdminTest"));
+        }
+        return self::$is_admin;
     }
 
     public static function loadConfiguration()
     {
-        // OC_ROOT environment variable
-        $oc_root = getenv('OC_ROOT');
-        if ($oc_root != false && !empty($oc_root)) {
-            $_ENV['OC_ROOT'] = $oc_root;
-        }
         if (!isset($_ENV['OC_ROOT'])) {
             throw new \Exception('OC_ROOT environment variable needs to be set');
         }
@@ -35,47 +58,9 @@ class OpenCartTest extends PHPUnit_Framework_TestCase
         }
     }
 
-    public static function loadOpenCart()
-    {
-        if (!self::$loaded) {
-            $application_config = 'test-config';
-            $_SERVER['SERVER_PORT'] = 80;
-            $_SERVER['SERVER_PROTOCOL'] = 'CLI';
-            $_SERVER['REQUEST_METHOD'] = 'GET';
-            $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
-
-            ob_start();
-            self::loadConfiguration();
-            require_once(DIR_SYSTEM . 'startup.php');
-            require_once(DIR_SYSTEM . 'framework.php');
-            ob_end_clean();
-
-
-            self::$registry = $registry;
-            self::$registry->set('controller', $controller);
-
-            if (self::isAdmin()) {
-                $session = new stdClass();
-                $session->data = array();
-                $session->session_id = bin2hex(openssl_random_pseudo_bytes(16));
-                $session->getId = function () use ($session) {
-                    return $session->session_id;
-                };
-                self::$registry->set('session', $session);
-            }
-
-            self::$loaded = true;
-        }
-    }
-
     public function __get($name)
     {
         return self::$registry->get($name);
-    }
-
-    public function __construct()
-    {
-        self::loadOpenCart();
     }
 
     public function dispatchAction($route, $request_method = 'GET', $data = array())
@@ -87,6 +72,11 @@ class OpenCartTest extends PHPUnit_Framework_TestCase
         foreach ($data as $key => $value) {
             $this->request->{strtolower($request_method)}[$key] = $value;
         }
+        if (self::isAdmin()) {
+            $this->request->get['user_token'] = $this->session->data['user_token'];
+        }
+        $this->request->cookie['language'] = 'en-gb';
+        $this->request->cookie['currency'] = 'USD';
 
         $this->request->get['route'] = $route;
         $this->request->server['REQUEST_METHOD'] = $request_method;
@@ -112,11 +102,11 @@ class OpenCartTest extends PHPUnit_Framework_TestCase
     {
         $logged = false;
 
-        if (!$this->isAdmin() && ($logged = $this->customer->login($username, $password, $override))) { // login as customer
+        if (!self::isAdmin() && ($logged = $this->customer->login($username, $password, $override))) { // login as customer
             $this->session->data['customer_id'] = $this->customer->getId();
         } elseif ($logged = $this->user->login($username, $password)) {
             $this->session->data['user_id'] = $this->user->getId();
-            $this->request->get['token'] = $this->session->data['token'] = bin2hex(openssl_random_pseudo_bytes(16));
+            $this->session->data['user_token'] = bin2hex(openssl_random_pseudo_bytes(16));
         }
 
         return $logged;
@@ -124,14 +114,21 @@ class OpenCartTest extends PHPUnit_Framework_TestCase
 
     public function logout()
     {
-        if ($this->isAdmin()) {
+        if (self::isAdmin()) {
             $this->user->logout();
             unset($this->session->data['user_id']);
-            unset($this->session->data['token']);
+            unset($this->session->data['user_token']);
         } else {
             $this->customer->logout();
             unset($this->session->data['customer_id']);
         }
+    }
+    
+    public function tearDown()
+    {
+        $is_admin = self::$is_admin;
+        self::$is_admin = null;
+        self::$loaded = false;
     }
 
 }

@@ -1,9 +1,10 @@
 <?php
 
 define('VERSION', '2.3.0.1');
+define('DIR_STORAGE', __DIR__.'/../storage/');
 
 // Site
-$_['site_base']        = substr(HTTP_SERVER, 7);
+$_['site_base']        = getenv('HTTP_SERVER');
 $_['site_ssl']         = false;
 
 // Database
@@ -22,34 +23,39 @@ $_['library_autoload'] = array(
 
 // Action Events
 $_['action_event'] = array(
-    'view/*/before' => 'event/theme',
-    //'model/*/before' => 'event/debug/before'
-    //'model/*/after' => 'event/debug/after'
+    'view/*/before' => array(
+        999  => 'event/language',
+        1000 => 'event/theme'
+    ),
 );
 
-if (defined('HTTP_ADMIN')) { // is defined iff in catalog
+if (defined('HTTP_CATALOG')) { // is defined iff in catalog
     $_['config_theme'] = 'theme_default';
     $_['theme_default_status'] = 1;
-
-    // Actions
-    $_['action_pre_action'] = array(
-        'startup/test_startup'
-    );
-} else { // admin
-
     $_['action_default'] = 'common/dashboard';
 
     // Actions
     $_['action_pre_action'] = array(
-        'startup/startup' ,
+        'startup/startup',
         'startup/error',
         'startup/event',
         'startup/sass',
         'startup/login',
         'startup/permission'
     );
+} else { // admin
+    // Actions
+    $_['action_pre_action'] = array(
+        'startup/startup',
+        'startup/error',
+        'startup/event',
+        'startup/maintenance',
+        'startup/seo_url'
+    );
 }
 
 // Test Settings
+$_['session_engine'] = 'test';
 $_['session_autostart'] = false;
 
+$_['theme_directory'] = 'default';
