@@ -1,11 +1,12 @@
 <?php
+namespace Tests;
 
 use PHPUnit\Framework\TestCase;
 
 class OpenCartTest extends TestCase
 {
-    static $loaded = false;
-    static $registry;
+    private static $loaded = false;
+    public static $registry;
     private static $is_admin = null;
 
     public function setUp()
@@ -123,11 +124,10 @@ class OpenCartTest extends TestCase
             unset($this->session->data['customer_id']);
         }
     }
-    
+
     public function tearDown()
     {
         self::$is_admin = null;
         self::$loaded = false;
     }
-
 }

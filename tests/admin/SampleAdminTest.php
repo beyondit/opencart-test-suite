@@ -1,11 +1,13 @@
 <?php
 
+use Tests\OpenCartTest;
+
 class SampleAdminTest extends OpenCartTest
 {
 
     public function testLoggedInCall()
     {
-        $this->login('admin','admin');
+        $this->login('admin', 'admin');
         $response = $this->dispatchAction('common/dashboard');
         $this->assertRegExp('/Total Sales/', $response->getOutput());
         $this->logout();
@@ -22,4 +24,3 @@ class SampleAdminTest extends OpenCartTest
         $this->assertRegExp('/Please enter your login details./', $response->getOutput());
     }
 }
-

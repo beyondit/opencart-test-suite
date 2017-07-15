@@ -1,6 +1,8 @@
 <?php
-class ControllerStartupTestStartup extends Controller {
-    public function index() {
+class ControllerStartupTestStartup extends Controller
+{
+    public function index()
+    {
         // Store
         if ($this->request->server['HTTPS']) {
             $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "store WHERE REPLACE(`ssl`, 'www.', '') = '" . $this->db->escape('https://' . str_replace('www.', '', $_SERVER['HTTP_HOST']) . rtrim(dirname($_SERVER['PHP_SELF']), '/.\\') . '/') . "'");

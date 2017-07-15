@@ -1,5 +1,6 @@
 <?php
 namespace Session;
+
 class Test
 {
     public static $static_data = array();
@@ -26,14 +27,18 @@ class Test
         }
     }
     
-    public function getId() {
+    public function getId()
+    {
         return self::$session_id;
     }
     
     
-    public function read($session_id) {
+    public function read($session_id)
+    {
         return true;
     }
     
-    public function write($session_id, $data) { }
+    public function write($session_id, $data)
+    {
+    }
 }
