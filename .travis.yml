@@ -1,8 +1,4 @@
 language: php
-env:
-  - OC_ROOT=/home/travis/build/vitormattos/opencart-test-suite/www/
-  - HTTP_SERVER=http://localhost:8080/
-  - TEST_CONFIG=test-config
 php:
   - 7.0
   - 7.1
