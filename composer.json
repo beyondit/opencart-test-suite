@@ -1,6 +1,8 @@
 {
     "name" : "beyondit/opencart-test-suite",
     "description" : "Testing Suite for OpenCart Development",
+    "type" : "opencart-extension",
+    "keywords" : ["opencart", "phpunit"],
     "license" : "GPL-3.0",
     "authors" : [{
             "name" : "Stefan Huber",
@@ -9,14 +11,6 @@
             "role" : "Developer"
         }
     ],
-    "type" : "opencart-extension",
-    "extra" : {
-        "src-dir" : "src/upload"
-    },
-    "config" : {
-        "bin-dir" : "bin/",
-        "preferred-install" : "source"
-    },
     "require" : {
         "php" : ">=5.4",
         "phpunit/phpunit" : "^6.2",
@@ -32,5 +26,16 @@
         "files" : [
             "src/OpenCartTest.php"
         ]
+    },
+    "config" : {
+        "bin-dir" : "bin/",
+        "preferred-install" : "source"
+    },
+    "scripts" : {
+		"phpcs" : "phpcs --standard=PSR2 -n src tests",
+		"phpcbf" : "phpcbf --standard=PSR2 -n src tests"
+    },
+    "extra" : {
+        "src-dir" : "src/upload"
     }
 }

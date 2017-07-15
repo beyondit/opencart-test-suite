@@ -1,6 +1,6 @@
 <?php
 
-use Tests\OpenCartTest;
+namespace Tests;
 
 class SampleAdminTest extends OpenCartTest
 {
