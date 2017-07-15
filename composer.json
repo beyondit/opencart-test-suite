@@ -5,12 +5,11 @@
     "keywords" : ["opencart", "phpunit"],
     "license" : "GPL-3.0",
     "authors" : [{
-            "name" : "Stefan Huber",
-            "email" : "stefan.huber@beyondit.at",
-            "homepage" : "http://www.beyondit.at",
-            "role" : "Developer"
-        }
-    ],
+        "name" : "Stefan Huber",
+        "email" : "stefan.huber@beyondit.at",
+        "homepage" : "http://www.beyondit.at",
+        "role" : "Developer"
+    }],
     "require" : {
         "php" : ">=5.4",
         "phpunit/phpunit" : "^6.2",
@@ -32,8 +31,8 @@
         "preferred-install" : "source"
     },
     "scripts" : {
-		"phpcs" : "phpcs --standard=PSR2 -n src tests",
-		"phpcbf" : "phpcbf --standard=PSR2 -n src tests"
+        "phpcs" : "phpcs --standard=PSR2 -n src tests",
+        "phpcbf" : "phpcbf --standard=PSR2 -n src tests"
     },
     "extra" : {
         "src-dir" : "src/upload"
