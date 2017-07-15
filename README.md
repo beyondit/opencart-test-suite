@@ -16,7 +16,7 @@ The intend of this project is to provide a simple approach for setting up a test
 
  - Create a new OpenCart instance (maybe follow this [guide](https://medium.com/@stefan.huber/installing-opencart-with-composer-74fe0ba121b1))
  - Add `opencart-test-suite` as a dependency `composer require beyondit/opencart-test-suite --dev`
- - Use `composer require beyondit/opencart-test-suite:2.2.0 --dev` for OpenCart version 2.2.0.0 respectively
+ - Use `composer require beyondit/opencart-test-suite:3.0 --dev` for OpenCart version 3.0 respectively
  - Create a `tests` folder and add respective tests (see examples below)
  - Add a `phpunit.xml` which includes testsuites (e.g. admin and catalog) and set an env variable to the opencart root directory (see example phpunit.xml below)
  - Now tests can be run via `vendor/bin/phpunit --testsuite catalog-tests` command
@@ -30,50 +30,56 @@ __Our [OpenCart project template](https://github.com/beyondit/opencart-project-t
 <phpunit bootstrap="vendor/autoload.php">
     <testsuites>
         <testsuite name="catalog-tests">
-            <file>./tests/SampleTest.php</file>
-        </testsuite>        
+            <directory suffix="Test.php">./tests/catalog/</directory>
+        </testsuite>
+        <testsuite name="admin-tests">
+            <directory suffix="AdminTest.php">./tests/admin/</directory>
+        </testsuite>
     </testsuites>
     <php>
         <env name="OC_ROOT" value="/../opencart/root-folder" />
+        <env name="HTTP_SERVER" value="http://localhost:8080/" />
+        <env name="TEST_CONFIG" value="test-config" />
     </php>
 </phpunit>
 ```
-			
+            
 ## Test Examples
 
 ### Testing a Model
 
 ```php
+namespace Tests;
+
 class ModelCatalogManufacturerTest extends OpenCartTest
-{	
-	public function testASpecificManufacturer()
-	{
-		
-		// load the manufacturer model
-		$model = $this->loadModel("catalog/manufacturer");
-		$manufacturer = $model->getManufacturer(5);		
-		
-		// test a specific assertion
-		$this->assertEquals('HTC', $manufacturer['name']);
-		
-	}	
+{
+    public function testASpecificManufacturer()
+    {
+        // load the manufacturer model
+        $model = $this->loadModel("catalog/manufacturer");
+        $manufacturer = $model->getManufacturer(5);
+
+        // test a specific assertion
+        $this->assertEquals('HTC', $manufacturer['name']);
+
+    }
 }
 ```
 
 ### Testing a Controller
 ```php
+namespace Tests;
+
 class ControllerCheckoutCartTest extends OpenCartTest
-{	
-	public function testAddingASpecificProductToTheCart()
-	{
-			
-		$response = $this->dispatchAction('checkout/cart/add','POST',['product_id' => 28]);
+{
+    public function testAddingASpecificProductToTheCart()
+    {
+        $response = $this->dispatchAction('checkout/cart/add','POST',['product_id' => 28]);
         $output = json_decode($response->getOutput(),true);
         
         $this->assertTrue(isset($output['success']) && isset($output['total']));
         $this->assertRegExp('/HTC Touch HD/', $output['success']);
-        
-	}	
+    }
 }
 ```
 
@@ -111,4 +117,3 @@ class ControllerCommonDashboardAdminTest extends OpenCartTest {
     }   
 }
 ```
-
