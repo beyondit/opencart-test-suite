@@ -44,7 +44,7 @@ __Our [OpenCart project template](https://github.com/beyondit/opencart-project-t
     </php>
 </phpunit>
 ```
-            
+
 ## Test Examples
 
 ### Testing a Model
