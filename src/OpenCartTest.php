@@ -40,16 +40,16 @@ class OpenCartTest extends TestCase
 
     public static function loadConfiguration()
     {
-        if (!isset($_ENV['OC_ROOT'])) {
+        if (!getenv('OC_ROOT')) {
             throw new \Exception('OC_ROOT environment variable needs to be set');
         }
 
         // Path needs / at the end
-        if (substr($_ENV['OC_ROOT'], -1) != DIRECTORY_SEPARATOR) {
-            $_ENV['OC_ROOT'] .= DIRECTORY_SEPARATOR;
+        if (substr(getenv('OC_ROOT'), -1) != DIRECTORY_SEPARATOR) {
+            putenv('OC_ROOT='.DIRECTORY_SEPARATOR);
         }
 
-        $config_path = $_ENV['OC_ROOT'] . (self::isAdmin() === false ? '' : 'admin/') . 'config.php';
+        $config_path = getenv('OC_ROOT') . (self::isAdmin() === false ? '' : 'admin/') . 'config.php';
 
         if (file_exists($config_path)) {
             require_once($config_path);
