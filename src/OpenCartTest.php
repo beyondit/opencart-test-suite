@@ -126,7 +126,6 @@ class OpenCartTest extends TestCase
     
     public function tearDown()
     {
-        $is_admin = self::$is_admin;
         self::$is_admin = null;
         self::$loaded = false;
     }
