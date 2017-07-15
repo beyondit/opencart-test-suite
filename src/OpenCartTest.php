@@ -72,7 +72,7 @@ class OpenCartTest extends TestCase
         foreach ($data as $key => $value) {
             $this->request->{strtolower($request_method)}[$key] = $value;
         }
-        if (self::isAdmin()) {
+        if (self::isAdmin() && isset($this->session->data['user_token'])) {
             $this->request->get['user_token'] = $this->session->data['user_token'];
         }
         $this->request->cookie['language'] = 'en-gb';
