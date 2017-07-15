@@ -55,7 +55,7 @@ class OpenCartTest extends TestCase
         if (file_exists($config_path)) {
             require_once($config_path);
         } else {
-            throw new Exception("Missing config file at: " . $config_path);
+            throw new \Exception("Missing config file at: " . $config_path);
         }
     }
 
@@ -81,7 +81,7 @@ class OpenCartTest extends TestCase
 
         $this->request->get['route'] = $route;
         $this->request->server['REQUEST_METHOD'] = $request_method;
-        $this->controller->dispatch(new Action($route), new Action($this->config->get('action_error')));
+        $this->controller->dispatch(new \Action($route), new \Action($this->config->get('action_error')));
 
         return $this->response;
     }
