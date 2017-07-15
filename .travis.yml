@@ -4,8 +4,11 @@ env:
   - HTTP_SERVER=http://localhost:8080/
   - TEST_CONFIG=test-config
 php:
-  - "5.5"
-  - "7"
+  - 5.4
+  - 5.5
+  - 5.6
+  - 7.0
+  - 7.2
 install:
   composer install
 before_script:
