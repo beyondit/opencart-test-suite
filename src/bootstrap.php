@@ -9,6 +9,6 @@ if ((!$loader = $includeIfExists(__DIR__.'/../vendor/autoload.php')) && (!$loade
 }
 
 if (file_exists($file = __DIR__.'/../.env') || file_exists($file = __DIR__.'/../../../../.env')) {
-    $dotenv = new Dotenv\Dotenv(dirname($file));
+    $dotenv = new \Dotenv\Dotenv(dirname($file));
     $dotenv->load();
 }
