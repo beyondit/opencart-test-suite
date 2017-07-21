@@ -1,10 +1,9 @@
 <?php
 
-define('VERSION', '2.3.0.1');
-define('DIR_STORAGE', __DIR__.'/../storage/');
+define('VERSION', '3.0.2.0');
 
 // Site
-$_['site_base']        = getenv('HTTP_SERVER');
+$_['site_url']         = getenv('HTTP_SERVER');
 $_['site_ssl']         = false;
 
 // Database
@@ -23,16 +22,29 @@ $_['library_autoload'] = array(
 
 // Action Events
 $_['action_event'] = array(
+    'controller/*/before' => array(
+        'event/language/before'
+    ),
+    'controller/*/after' => array(
+        'event/language/after'
+    ),
     'view/*/before' => array(
-        999  => 'event/language',
+        500  => 'event/theme/override',
+        998  => 'event/language',
         1000 => 'event/theme'
     ),
+    'language/*/after' => array(
+        'event/translation'
+    ),
+    //'view/*/before' => array(
+    //	1000  => 'event/debug/before'
+    //),
+    'controller/*/after'  => array(
+        'event/debug/after'
+    )
 );
 
 if (defined('HTTP_CATALOG')) { // is defined iff in catalog
-    $_['config_theme'] = 'theme_default';
-    $_['theme_default_status'] = 1;
-    $_['action_default'] = 'common/dashboard';
 
     // Actions
     $_['action_pre_action'] = array(
@@ -58,4 +70,6 @@ if (defined('HTTP_CATALOG')) { // is defined iff in catalog
 $_['session_engine'] = 'test';
 $_['session_autostart'] = false;
 
-$_['theme_directory'] = 'default';
+$_['template_engine']    = 'twig';
+$_['template_directory'] = '';
+$_['template_cache']     = false;
