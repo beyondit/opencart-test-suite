@@ -64,6 +64,14 @@ class OpenCartTest extends TestCase
         return self::$registry->get($name);
     }
 
+    /**
+     * Request a action to OpenCart and return object of response
+     *
+     * @param string $route
+     * @param string $request_method (GET|POST)
+     * @param array $data
+     * @return \Response
+     */
     public function dispatchAction($route, $request_method = 'GET', $data = array())
     {
         if ($request_method != 'GET' && $request_method != 'POST') {
