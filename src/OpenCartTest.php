@@ -47,7 +47,7 @@ class OpenCartTest extends TestCase
 
         // Path needs / at the end
         if (substr(getenv('OC_ROOT'), -1) != DIRECTORY_SEPARATOR) {
-            putenv('OC_ROOT='.DIRECTORY_SEPARATOR);
+            putenv('OC_ROOT=' . getenv('OC_ROOT') . DIRECTORY_SEPARATOR);
         }
 
         $config_path = getenv('OC_ROOT') . (self::isAdmin() === false ? '' : 'admin/') . 'config.php';
